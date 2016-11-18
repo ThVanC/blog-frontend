@@ -66,3 +66,11 @@ gulp.task('build', function() {
     ['lint', 'minify-css', 'minify-js', 'copy-html-files', 'copy-bower-components', 'connectDist']
   );
 });
+
+gulp.task('serveprod', function() {
+  connect.server({
+    root: 'app/',
+    port: process.env.PORT || 5000, // localhost:5000
+    livereload: false
+  });
+});
