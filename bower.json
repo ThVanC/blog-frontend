@@ -1,0 +1,26 @@
+{
+  "name": "blog-frontend",
+  "description": "My first blog post site",
+  "main": "gulpfile.js",
+  "authors": [
+    "Thomas Van Cleemput"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/ThVanC/blog-frontend",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "app/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.5.8",
+    "angular-animate": "^1.5.8",
+    "angular-route": "^1.5.8",
+    "jquery": "^3.1.1",
+    "animate.css": "^3.5.2",
+    "bootstrap": "^3.3.7",
+    "font-awesome": "fontawesome#^4.7.0"
+  }
+}
