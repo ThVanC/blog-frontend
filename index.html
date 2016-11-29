@@ -1,43 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html>
   <head>
-    <!-- meta -->
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-    <meta name="viewport" content="width = device-width, minimal-ui, initial-scale = 1, user-scalable = no" />
-    <meta name="apple-mobile-web-app-title" content="Angular-ES6-JSPM" />
-    <meta name="keywords" content="es6, jspm, gulp, babel, systemjs, angularjs, sass, travis-ci, heroku" />
-    <meta name="description" content="An experimental project in using ES6 with AngularJS." />
-    <meta name="author" content="Ye Huang, sysuhuangye@gmail.com" />
-    <title>Angular ES6 Demo</title>
-    <!-- /meta -->
+      <link href="https://s3.amazonaws.com/codecademy-content/projects/bootstrap.min.css" rel="stylesheet" />
+    <link href='https://fonts.googleapis.com/css?family=Roboto:500,300,700,400' rel='stylesheet' type='text/css'>
+    <link href="css/main.css" rel="stylesheet" />
 
-    <!-- app.css -->
-    <link rel="stylesheet" type="text/css" href=".tmp/app.css">
-    <!-- /app.css -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
   </head>
-  <body>
-    <!-- header -->
-    <header></header>
-    <!-- /header -->
-
-    <!-- container -->
-    <div class="container">
-      <build-time></build-time>
-      <popup-window show="vm.modalShown"></popup-window>
+  <body ng-app="myApp">
+    <div class="header">
+      <div class="container">
+        <h1>Book End</h1>
+      </div>
     </div>
-    <!-- /container -->
 
-    <!-- footer -->
-    <footer></footer>
-    <!-- /footer -->
-    
-    <!-- app.js -->
-    <script src="jspm_packages/system.js"></script>
-    <script src="system.config.js"></script>
-    <script>System.import('app/js/app');</script>
-    <!-- /app.js -->
+    <div class="main" ng-controller="MainController">
+      <div class="container">
+
+        <h1>{{ title }}</h1>
+        <h2>{{ promo }}</h2>
+				
+        <div ng-repeat="product in products" class="col-md-6">
+          <div class="thumbnail">
+            <img ng-src="{{ product.cover }}">
+            <p class="title">{{ product.name }}</p>
+            <p class="price">{{ product.price | currency }}</p>
+            <p class="date">{{ product.pubdate | date }}</p>
+            <div class="rating">
+              <p class="likes" ng-click="plusOne($index)">+{{ product.likes}}</p>
+              <p class="dislikes" ng-click="minusOne($index)">-{{ product.dislikes }}</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- Modules -->
+    <script src="app/js/app.js"></script>
+
+    <!-- Controllers -->
+    <script src="app/js/controllers/MainController.js"></script>
   </body>
 </html>
