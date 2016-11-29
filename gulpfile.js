@@ -58,6 +58,15 @@ gulp.task('build-css', ['clean'], function() {
         .pipe(gulp.dest('./dist'));
 });
 
+gulp.task('build-css-clone', ['clean'], function() {
+    return gulp.src('./styles/*')
+        .pipe(sourcemaps.init())
+        .pipe(sass())
+        .pipe(cachebust.resources())
+        .pipe(sourcemaps.write('./maps'))
+        .pipe(gulp.dest('./dist/public'));
+});
+
 /////////////////////////////////////////////////////////////////////////////////////
 //
 // fills in the Angular template cache, to prevent loading the html templates via
@@ -77,6 +86,20 @@ gulp.task('build-template-cache', ['clean'], function() {
         }))
         .pipe(concat("templateCachePartials.js"))
         .pipe(gulp.dest("./dist"));
+});
+
+gulp.task('build-template-cache-clone', ['clean'], function() {
+    
+    var ngHtml2Js = require("gulp-ng-html2js"),
+        concat = require("gulp-concat");
+    
+    return gulp.src("./partials/*.html")
+        .pipe(ngHtml2Js({
+            moduleName: "todoPartials",
+            prefix: "/partials/"
+        }))
+        .pipe(concat("templateCachePartials.js"))
+        .pipe(gulp.dest("./dist/public"));
 });
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -138,13 +161,52 @@ gulp.task('build-js', ['clean'], function() {
         .pipe(gulp.dest('./dist/js/'));
 });
 
+gulp.task('build-js-clone', ['clean'], function() {
+    var b = browserify({
+        entries: './js/app.js',
+        debug: true,
+        paths: ['./js/controllers', './js/services', './js/directives'],
+        transform: [ngAnnotate]
+    });
+
+	return b;
+//    return b.bundle()
+//       .pipe(source('bundle.js'))
+//        .pipe(buffer())
+//        .pipe(cachebust.resources())
+//        .pipe(sourcemaps.init({loadMaps: true}))
+//        .pipe(uglify())
+//        .on('error', gutil.log)
+//        .pipe(sourcemaps.write('./'))
+//        .pipe(gulp.dest('./dist/public/js/'));
+		;
+});
+
+// Build server.js
+gulp.task('heroku-node', () => {
+  return gulp.src('heroku_node/server.js')
+    .pipe(gulp.dest('./dist'));
+});
+
+// Build package.json
+gulp.task('heroku-package', () => {
+  return gulp.src('heroku_node/package.json')
+    .pipe(gulp.dest('./dist'));
+});
+
 /////////////////////////////////////////////////////////////////////////////////////
 //
 // full build (except sprites), applies cache busting to the main page css and js bundles
 //
 /////////////////////////////////////////////////////////////////////////////////////
 
-gulp.task('build', [ 'clean', 'bower','build-css','build-template-cache', 'jshint', 'build-js'], function() {
+gulp.task('build', [ 'clean', 'bower','build-css', 'build-css-clone','build-template-cache', 'jshint', 'build-js','heroku-node','heroku-package'], function() {
+    return gulp.src('index.html')
+        .pipe(cachebust.references())
+        .pipe(gulp.dest('dist'));
+});
+
+gulp.task('build-css-2', [ 'clean', 'bower','build-js','build-js-clone'], function() {
     return gulp.src('index.html')
         .pipe(cachebust.references())
         .pipe(gulp.dest('dist'));
