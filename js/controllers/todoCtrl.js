@@ -8,7 +8,7 @@
 angular = require('angular');
 
 angular.module('todomvc')
-	.controller('TodoCtrl', function TodoCtrl($scope, $routeParams, $filter, store) {
+	.controller('TodoCtrl', function TodoCtrl($scope, $routeParams, $filter, store, $http) {
 		'use strict';
 
 		var todos = $scope.todos = store.todos;
@@ -111,4 +111,9 @@ angular.module('todomvc')
 				}
 			});
 		};
+
+		$http.get('https://first-blog-site.herokuapp.com/post').
+        then(function(response) {
+            $scope.blogs = response.data;
+        });
 	});
